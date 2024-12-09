@@ -57,3 +57,116 @@ document.getElementById('generatePdf').addEventListener('click', function () {
     const fileName = `Facture_${clientName}_${invoiceDate}.pdf`;
     doc.save(fileName);
 });
+
+// Ouverture de la modal au chargement de la page
+window.onload = function () {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        document.getElementById('authModal').style.display = 'flex';
+    } else {
+        document.getElementById('logoutButton').style.display = 'block';
+    }
+};
+
+// Fermeture de la modal
+document.getElementById('closeModal').onclick = function () {
+    document.getElementById('authModal').style.display = 'none';
+};
+
+// Gestion du bouton "Se connecter"
+document.getElementById('loginButton').onclick = function () {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (email && password) {
+        // Simulation d'une vérification côté serveur
+        const token = `token_${email}_${new Date().getTime()}`;
+        localStorage.setItem('authToken', token);
+        alert('Connexion réussie !');
+        document.getElementById('authModal').style.display = 'none';
+        document.getElementById('logoutButton').style.display = 'block';
+    } else {
+        alert('Veuillez remplir tous les champs.');
+    }
+};
+
+// Gestion du bouton "Créer un compte"
+document.getElementById('registerButton').onclick = function () {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (email && password) {
+        // Simulation d'enregistrement
+        alert('Compte créé avec succès ! Vous pouvez maintenant vous connecter.');
+        document.getElementById('authModal').style.display = 'none';
+    } else {
+        alert('Veuillez remplir tous les champs.');
+    }
+};
+
+// Gestion du bouton "Déconnexion"
+document.getElementById('logoutButton').onclick = function () {
+    localStorage.removeItem('authToken');
+    alert('Déconnecté avec succès.');
+    document.getElementById('logoutButton').style.display = 'none';
+    document.getElementById('authModal').style.display = 'flex';
+};
+
+const apiBaseUrl = 'http://localhost:3000';
+
+// Création d'un compte
+document.getElementById('registerButton').onclick = async function () {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (email && password) {
+        try {
+            const response = await fetch(`${apiBaseUrl}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert(result.message);
+            } else {
+                alert(result.error);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la création du compte:', error);
+        }
+    } else {
+        alert('Veuillez remplir tous les champs.');
+    }
+};
+
+// Connexion
+document.getElementById('loginButton').onclick = async function () {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (email && password) {
+        try {
+            const response = await fetch(`${apiBaseUrl}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                localStorage.setItem('authToken', result.token);
+                alert(result.message);
+                document.getElementById('authModal').style.display = 'none';
+                document.getElementById('logoutButton').style.display = 'block';
+            } else {
+                alert(result.error);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la connexion:', error);
+        }
+    } else {
+        alert('Veuillez remplir tous les champs.');
+    }
+};

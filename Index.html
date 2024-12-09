@@ -7,6 +7,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Bienvenue !</h2>
+            <form id="authForm">
+                <label for="email">Email :</label>
+                <input type="email" id="email" placeholder="Entrez votre email" required>
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" placeholder="Entrez votre mot de passe" required>
+                <button type="button" id="loginButton">Se connecter</button>
+                <button type="button" id="registerButton">Créer un compte</button>
+            </form>
+        </div>
+    </div>
+    <button id="logoutButton" style="display: none;">Déconnexion</button>
+    
     <div class="container">
         <h1>Générateur de Facture</h1>
         <form id="invoiceForm">
