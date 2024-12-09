@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Création de Factures et Devis</h1>
+        <form id="invoiceForm">
+            <div>
+                <label for="clientName">Nom du client :</label>
+                <input type="text" id="clientName" required>
+            </div>
+            <div>
+                <label for="clientAddress">Adresse du client :</label>
+                <input type="text" id="clientAddress" required>
+            </div>
+            <div>
+                <label for="serviceDetails">Détails de la prestation :</label>
+                <textarea id="serviceDetails" rows="3" required></textarea>
+            </div>
+            <div>
+                <label for="hourlyRate">Taux horaire (€) :</label>
+                <input type="number" id="hourlyRate" required>
+            </div>
+            <div>
+                <label for="hoursWorked">Durée (heures) :</label>
+                <input type="number" id="hoursWorked" required>
+            </div>
+            <button type="button" id="generateInvoice">Générer Facture</button>
+        </form>
+        <div id="output"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
