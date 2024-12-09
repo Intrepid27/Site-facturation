@@ -21,6 +21,24 @@
             </form>
         </div>
     </div>
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeRegisterModal">&times;</span>
+            <h2>Créer un compte</h2>
+            <form id="registerForm">
+                <label for="firstName">Nom de la société :</label>
+                <input type="text" id="societyName" placeholder="Entrez le nom de votre société" required>
+                <label for="lastName">Numéro de SIRET :</label>
+                <input type="text" id="siretNumber" placeholder="Entrez votre numéro de SIRET" required>
+                <label for="registerEmail">Email :</label>
+                <input type="email" id="registerEmail" placeholder="Entrez votre email" required>
+                <label for="registerPassword">Mot de passe :</label>
+                <input type="password" id="registerPassword" placeholder="Entrez votre mot de passe" required>
+                <button type="button" id="submitRegisterButton">Créer un compte</button>
+            </form>
+        </div>
+    </div>
+    
     <button id="logoutButton" style="display: none;">Déconnexion</button>
     
     <div class="container">

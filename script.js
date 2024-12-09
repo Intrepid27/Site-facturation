@@ -170,3 +170,76 @@ document.getElementById('loginButton').onclick = async function () {
         alert('Veuillez remplir tous les champs.');
     }
 };
+
+// Références aux modals et boutons
+const registerModal = document.getElementById('registerModal');
+const closeRegisterModal = document.getElementById('closeRegisterModal');
+
+// Ouverture de la modal "Créer un compte"
+document.getElementById('registerButton').onclick = function () {
+    document.getElementById('authModal').style.display = 'none';
+    registerModal.style.display = 'flex';
+};
+
+// Fermeture de la modal "Créer un compte"
+closeRegisterModal.onclick = function () {
+    registerModal.style.display = 'none';
+    document.getElementById('authModal').style.display = 'flex';
+};
+
+// Gestion du bouton "Créer un compte" dans la modal de création
+document.getElementById('submitRegisterButton').onclick = async function () {
+    const firstName = document.getElementById('societyName').value;
+    const lastName = document.getElementById('siretNumber').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+
+    if (firstName && lastName && email && password) {
+        try {
+            const response = await fetch(`${apiBaseUrl}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ firstName, lastName, email, password }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert(result.message);
+                registerModal.style.display = 'none';
+                document.getElementById('authModal').style.display = 'flex';
+            } else {
+                alert(result.error);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la création du compte:', error);
+        }
+    } else {
+        alert('Veuillez remplir tous les champs.');
+    }
+};
+
+app.post('/register', (req, res) => {
+    const { firstName, lastName, email, password } = req.body;
+
+    if (!firstName || !lastName || !email || !password) {
+        return res.status(400).json({ error: 'Tous les champs sont requis.' });
+    }
+
+    bcrypt.hash(password, 10, (err, hash) => {
+        if (err) return res.status(500).json({ error: 'Erreur serveur.' });
+
+        db.run(
+            'INSERT INTO users (societyName, siretNumber, email, password) VALUES (?, ?, ?, ?)',
+            [firstName, lastName, email, hash],
+            (err) => {
+                if (err) {
+                    if (err.code === 'SQLITE_CONSTRAINT') {
+                        return res.status(400).json({ error: 'Email déjà utilisé.' });
+                    }
+                    return res.status(500).json({ error: 'Erreur serveur.' });
+                }
+                res.status(201).json({ message: 'Utilisateur créé avec succès.' });
+            }
+        );
+    });
+});
