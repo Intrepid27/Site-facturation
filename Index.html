@@ -1,38 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facturation</title>
+    <title>Générateur de Facture</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Création de Factures et Devis</h1>
+        <h1>Générateur de Facture</h1>
         <form id="invoiceForm">
-            <div>
-                <label for="clientName">Nom du client :</label>
+            <fieldset>
+                <legend>Informations du Vendeur</legend>
+                <label for="sellerName">Nom :</label>
+                <input type="text" id="sellerName" required>
+                <label for="sellerAddress">Adresse :</label>
+                <textarea id="sellerAddress" required></textarea>
+            </fieldset>
+            <fieldset>
+                <legend>Informations du Client</legend>
+                <label for="clientName">Nom :</label>
                 <input type="text" id="clientName" required>
-            </div>
-            <div>
-                <label for="clientAddress">Adresse du client :</label>
-                <input type="text" id="clientAddress" required>
-            </div>
-            <div>
-                <label for="serviceDetails">Détails de la prestation :</label>
-                <textarea id="serviceDetails" rows="3" required></textarea>
-            </div>
-            <div>
-                <label for="hourlyRate">Taux horaire (€) :</label>
-                <input type="number" id="hourlyRate" required>
-            </div>
-            <div>
-                <label for="hoursWorked">Durée (heures) :</label>
-                <input type="number" id="hoursWorked" required>
-            </div>
-            <button type="button" id="generateInvoice">Générer Facture</button>
+                <label for="clientAddress">Adresse :</label>
+                <textarea id="clientAddress" required></textarea>
+            </fieldset>
+            <fieldset>
+                <legend>Détails de la Facture</legend>
+                <label for="invoiceDate">Date de la facture :</label>
+                <input type="date" id="invoiceDate" required>
+                <label for="dueDate">Date d'échéance :</label>
+                <input type="date" id="dueDate" required>
+                <label for="itemDescription">Description du produit/service :</label>
+                <textarea id="itemDescription" required></textarea>
+                <label for="quantity">Quantité :</label>
+                <input type="number" id="quantity" min="1" required>
+                <label for="unitPrice">Prix unitaire HT (€) :</label>
+                <input type="number" id="unitPrice" step="0.01" required>
+                <label for="vatRate">Taux de TVA (%) :</label>
+                <input type="number" id="vatRate" step="0.01" required>
+            </fieldset>
+            <button type="button" id="generatePdf">Générer la Facture PDF</button>
         </form>
-        <div id="output"></div>
     </div>
     <script src="script.js"></script>
 </body>
