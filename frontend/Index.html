@@ -2,80 +2,99 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Factures</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <title>Générateur de Facture</title>
-    <button id="authButton">Créer/Se connecter</button>
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <h2>Bienvenue !</h2>
-            <form id="authForm">
-                <label for="email">Email :</label>
-                <input type="email" id="email" placeholder="Entrez votre email" required>
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" placeholder="Entrez votre mot de passe" required>
-                <button type="button" id="loginButton">Se connecter</button>
-                <button type="button" id="registerButton">Créer un compte</button>
-            </form>
+    <div class="invoice">
+        <h1>FACTURE</h1>
+        <div class="header">
+            <div class="body-style">
+                <div class="info">
+                    <div class="my-info">
+                        <label for="company-name-input">Nom de l'entreprise :</label>
+                        <input type="text" id="company-name-input" required>
+        
+                        <label for="company-siret-input">Numéro de SIRET :</label>
+                        <input type="text" id="company-siret-input" required>
+        
+                        <label for="company-address-input">Adresse :</label>
+                        <input type="text" id="company-address-input" required>
+
+                        <label for="company-number-input">Numéro de téléphone</label>
+                        <input type="text" id="company-number-input" required>
+                    </div>
+
+
+                    <div class="client-info">
+                        <label for="company-name-input">Nom de l'entreprise :</label>
+                        <input type="text" id="company-name-input" required>
+        
+                        <label for="company-address-input">Adresse :</label>
+                        <input type="text" id="company-address-input" required>                    </div>
+                </div>
+            </div>
+            <div class="info-facture">
+                <div class="facture-number">
+                    <label>Facture n°</label>
+                    <input type="text" id="facture-number" readonly>
+                    <button id="generate-facture-number">Générer numéro</button>
+                </div>
+                <div class="facture-date">
+                    <label>Date</label>
+                    <input type="date" value="2025-01-06">
+                </div>
+            </div>
+            
         </div>
-    </div>
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeRegisterModal">&times;</span>
-            <h2>Créer un compte</h2>
-            <form id="registerForm">
-                <label for="firstName">Nom de la société :</label>
-                <input type="text" id="societyName" placeholder="Entrez le nom de votre société" required>
-                <label for="lastName">Numéro de SIRET :</label>
-                <input type="text" id="siretNumber" placeholder="Entrez votre numéro de SIRET" required>
-                <label for="registerEmail">Email :</label>
-                <input type="email" id="registerEmail" placeholder="Entrez votre email" required>
-                <label for="registerPassword">Mot de passe :</label>
-                <input type="password" id="registerPassword" placeholder="Entrez votre mot de passe" required>
-                <button type="button" id="submitRegisterButton">Créer un compte</button>
-            </form>
+
+        <div id="table-container">
+            <table id="dynamic-table" class="table-container">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les lignes seront ajoutées ici dynamiquement -->
+                </tbody>
+            </table>
+            <div class="line-btn">
+                <button id="add-row">Ajouter une ligne</button>
+                <button id="delete-row">Supprimer une ligne</button>
+            </div>
         </div>
-    </div>
-    
-    <button id="logoutButton" style="display: none;">Déconnexion</button>
-    
-    <div class="container">
-        <h1>Générateur de Facture</h1>
-        <form id="invoiceForm">
-            <fieldset>
-                <legend>Informations du Vendeur</legend>
-                <label for="sellerName">Nom :</label>
-                <input type="text" id="sellerName" required>
-                <label for="sellerAddress">Adresse :</label>
-                <textarea id="sellerAddress" required></textarea>
-            </fieldset>
-            <fieldset>
-                <legend>Informations du Client</legend>
-                <label for="clientName">Nom :</label>
-                <input type="text" id="clientName" required>
-                <label for="clientAddress">Adresse :</label>
-                <textarea id="clientAddress" required></textarea>
-            </fieldset>
-            <fieldset>
-                <legend>Détails de la Facture</legend>
-                <label for="invoiceDate">Date de la facture :</label>
-                <input type="date" id="invoiceDate" required>
-                <label for="dueDate">Date d'échéance :</label>
-                <input type="date" id="dueDate" required>
-                <label for="itemDescription">Description du produit/service :</label>
-                <textarea id="itemDescription" required></textarea>
-                <label for="quantity">Quantité :</label>
-                <input type="number" id="quantity" min="1" required>
-                <label for="unitPrice">Prix unitaire HT (€) :</label>
-                <input type="number" id="unitPrice" step="0.01" required>
-                <label for="vatRate">Taux de TVA (%) :</label>
-                <input type="number" id="vatRate" step="0.01" required>
-            </fieldset>
-            <button type="button" id="generatePdf">Générer la Facture PDF</button>
-        </form>
+        
+        
+        <div class="totals">
+            <div>
+                <label>Sous-total :</label>
+                <input type="number" id="subtotal" value="0" readonly>
+            </div>
+            <div>
+                <label>TVA :</label>
+                <select id="tva-rate">
+                    <option value="0.2">20%</option>
+                    <option value="0.1">10%</option>
+                    <option value="0.055">5.5%</option>
+                    <option value="0">0%</option>
+                </select>
+            </div>
+            <div>
+                <label>Montant TVA :</label>
+                <input type="number" id="tva-amount" value="0" readonly>
+            </div>
+            <div>
+                <label>Total général :</label>
+                <input type="number" id="grand-total" value="0" readonly>
+            </div>
+        </div>
+        
+        <p>MERCI DE VOTRE CONFIANCE</p>
     </div>
     <script src="script.js"></script>
 </body>

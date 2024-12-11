@@ -1,103 +1,86 @@
-/* Styles généraux */
+/* Styles globaux */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-    background: #fff;
+.body-style{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.invoice {
+    background: white;
     padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
 }
 
 h1 {
     text-align: center;
-    color: #333;
-}
-
-form {
-    margin: 20px 0;
-}
-
-form div {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-input, textarea, button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin-bottom: 20px;
 }
 
 button {
-    background-color: #007bff;
-    color: white;
+    padding: 10px 20px;
+    margin: 10px;
     border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
     cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #555;
 }
 
-#output {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px dashed #ccc;
-    border-radius: 4px;
-}
+/*container infos */
 
-.field {
-    margin-bottom: 15px;
-}
-
-button#addField {
-    margin-bottom: 15px;
-    background-color: #28a745;
-}
-
-.field-container {
+.info{
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 10px;
+}
+
+.my-info, .client-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 5px;
+    width: 45%;
+    height: auto;
+    border: 2px solid black ;
+    border-radius: 10px;
+}
+
+.info-facture {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    margin-bottom: 10px;
+    box-sizing: border-box;
+    padding: 5px;
+    width: 95%;
+    height: auto;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 0 auto;
+    text-align: center;
 }
 
-.field-container .field {
-    flex-grow: 1;
-    margin-right: 10px;
-}
 
-.field-container .removeField {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.field-container .removeField:hover {
-    background-color: #c82333;
-}
-
-/* Modal */
+/* Styles pour les modales */
 .modal {
     display: none;
     position: fixed;
@@ -107,71 +90,62 @@ button#addField {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
 }
 
-.modal-content {
-    background-color: #fff;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%;
-    border-radius: 8px;
+#dynamic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+#dynamic-table th, #dynamic-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
     text-align: center;
 }
 
-.modal-content h2 {
-    margin-bottom: 20px;
+#dynamic-table th {
+    background-color: #f4f4f4;
 }
 
-.modal-content button {
-    margin-top: 20px;
-    background-color: #007bff;
+button {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #007BFF;
     color: white;
     border: none;
-    padding: 10px 15px;
     cursor: pointer;
-    border-radius: 4px;
 }
 
-.modal-content button:hover {
+.line-btn{
+    display: flex;
+    justify-content: end;
+}
+
+button:hover {
     background-color: #0056b3;
 }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
+tr.selected {
+    background-color: #ffcccc;
+}
+
+.totals div {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.totals label {
     font-weight: bold;
-    cursor: pointer;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
+.totals input {
+    width: 100px;
+    text-align: right;
 }
 
-/* Header et bouton "Créer/Se connecter" */
-header {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    z-index: 1000;
-}
-
-header button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-header button:hover {
-    background-color: #0056b3;
-}
