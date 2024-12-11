@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.querySelector("#dynamic-table tbody");
     const addRowButton = document.getElementById("add-row");
-    const deleteRowButton = document.getElementById("delete-row");
     const subtotalInput = document.getElementById("subtotal");
     const tvaRateSelect = document.getElementById("tva-rate");
     const tvaAmountInput = document.getElementById("tva-amount");
@@ -26,6 +25,16 @@ document.addEventListener("DOMContentLoaded", function () {
         priceInput.type = "number";
         priceInput.min = "0";
         priceInput.value = "0";
+        priceInput.addEventListener("focus", function () {
+            if (priceInput.value === "0") {
+                priceInput.value = "";
+            }
+        });
+        priceInput.addEventListener("blur", function () {
+            if (priceInput.value === "") {
+                priceInput.value = "0";
+            }
+        });
         priceCell.appendChild(priceInput);
         row.appendChild(priceCell);
 
@@ -47,6 +56,19 @@ document.addEventListener("DOMContentLoaded", function () {
         totalCell.appendChild(totalInput);
         row.appendChild(totalCell);
 
+        // Bouton Supprimer
+        const deleteCell = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "<span style='font-size: 16px;'>🗑️</span>";
+        deleteButton.title = "Supprimer cette ligne";
+        deleteButton.style.cursor = "pointer";
+        deleteButton.addEventListener("click", function () {
+            row.remove();
+            updateTotals();
+        });
+        deleteCell.appendChild(deleteButton);
+        row.appendChild(deleteCell);
+
         // Mettre à jour le total lorsque le prix ou la quantité change
         function updateRowTotal() {
             const price = parseFloat(priceInput.value) || 0;
@@ -58,12 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
         priceInput.addEventListener("input", updateRowTotal);
         quantityInput.addEventListener("input", updateRowTotal);
 
-        // Sélection de ligne
-        row.addEventListener("click", function () {
-            Array.from(tableBody.children).forEach((tr) => tr.classList.remove("selected"));
-            row.classList.add("selected");
-        });
-
         tableBody.appendChild(row);
         updateTotals();
     }
@@ -73,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Calculer le sous-total
         Array.from(tableBody.querySelectorAll("tr")).forEach(row => {
-            const totalInput = row.querySelector("td:last-child input");
+            const totalInput = row.querySelector("td:nth-child(4) input");
             subtotal += parseFloat(totalInput.value) || 0;
         });
 
@@ -95,17 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Ajouter une ligne au clic sur le bouton "Ajouter"
     addRowButton.addEventListener("click", createRow);
-
-    // Supprimer la ligne sélectionnée
-    deleteRowButton.addEventListener("click", function () {
-        const selectedRow = document.querySelector("#dynamic-table tbody .selected");
-        if (selectedRow) {
-            selectedRow.remove();
-            updateTotals();
-        } else {
-            alert("Veuillez sélectionner une ligne à supprimer.");
-        }
-    });
 
     // Générer un numéro de facture au clic sur le bouton "Générer numéro"
     generateFactureButton.addEventListener("click", generateFactureNumber);
